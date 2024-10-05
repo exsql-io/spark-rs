@@ -24,10 +24,6 @@ fn main() {
     rdd::new(vec![1,2,3])
         .map(|int| int + 1)
         .filter(|&i| i % 2 == 0)
-        .flat_map(|count| {
-            //println!("{}", count);
-            //(0..count).map(|_| Faker.fake::<Record>()).for_each(|r| println!("{:#}", r));
-            (0..count).map(|_| Faker.fake::<Record>())
-        })
+        .flat_map(|count| { (0..count).map(|_| Faker.fake::<Record>()) })
         .for_each(|r| println!("{:#}", r))
 }
