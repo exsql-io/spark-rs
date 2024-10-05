@@ -1,16 +1,16 @@
 use crate::rdd::RDD;
 
-pub struct VecRDD<T> {
+pub struct Collection<T> {
     iter: std::vec::IntoIter<T>,
 }
 
-impl<T> VecRDD<T> {
+impl<T> Collection<T> {
     pub fn new(vec: Vec<T>) -> Self {
         Self { iter: vec.into_iter() }
     }
 }
 
-impl<T> RDD for VecRDD<T> {
+impl<T> RDD for Collection<T> {
     type Item = T;
 
     fn next(&mut self) -> Option<T> {

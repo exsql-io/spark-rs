@@ -1,13 +1,13 @@
 use crate::rdd::RDD;
 
-pub struct ForeachRDD<R, F> {
+pub struct Foreach<R, F> {
     parent: R,
     f: F,
 }
 
-impl<R: RDD, F> ForeachRDD<R, F> where F: FnMut(R::Item) {
-    pub fn new(parent: R, f: F) -> ForeachRDD<R, F> {
-        ForeachRDD { parent, f }
+impl<R: RDD, F> Foreach<R, F> where F: FnMut(R::Item) {
+    pub fn new(parent: R, f: F) -> Foreach<R, F> {
+        Foreach { parent, f }
     }
     
     pub fn execute(&mut self) {
@@ -15,7 +15,7 @@ impl<R: RDD, F> ForeachRDD<R, F> where F: FnMut(R::Item) {
     }
 }
 
-impl <R: RDD, F> RDD for ForeachRDD<R, F>
+impl <R: RDD, F> RDD for Foreach<R, F>
 where F: FnMut(R::Item) {
 
     type Item = R::Item;

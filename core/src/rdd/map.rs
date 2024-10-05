@@ -1,17 +1,17 @@
 use crate::rdd::RDD;
 
-pub struct MapRDD<R, F> {
+pub struct Map<R, F> {
     parent: R,
     f: F,
 }
 
-impl<R, F> MapRDD<R, F> {
-    pub fn new(parent: R, f: F) -> MapRDD<R, F> {
-        MapRDD { parent, f }
+impl<R, F> Map<R, F> {
+    pub fn new(parent: R, f: F) -> Map<R, F> {
+        Map { parent, f }
     }
 }
 
-impl <U, R: RDD, F> RDD for MapRDD<R, F>
+impl <U, R: RDD, F> RDD for Map<R, F>
 where F: FnMut(R::Item) -> U {
 
     type Item = U;

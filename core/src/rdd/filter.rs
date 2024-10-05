@@ -1,17 +1,17 @@
 use crate::rdd::RDD;
 
-pub struct FilterRDD<R, F> {
+pub struct Filter<R, F> {
     parent: R,
     f: F,
 }
 
-impl<R, F> FilterRDD<R, F> {
-    pub fn new(parent: R, f: F) -> FilterRDD<R, F> {
-        FilterRDD { parent, f }
+impl<R, F> Filter<R, F> {
+    pub fn new(parent: R, f: F) -> Filter<R, F> {
+        Filter { parent, f }
     }
 }
 
-impl <R: RDD, F> RDD for FilterRDD<R, F>
+impl <R: RDD, F> RDD for Filter<R, F>
 where F: FnMut(&R::Item) -> bool {
 
     type Item = R::Item;

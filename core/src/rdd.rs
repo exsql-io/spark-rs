@@ -1,7 +1,7 @@
-mod map_rdd;
-mod vec_rdd;
-mod filter_rdd;
-mod foreach_rdd;
+mod map;
+mod vec;
+mod filter;
+mod foreach;
 
 pub trait RDD {
     type Item;
@@ -10,20 +10,20 @@ pub trait RDD {
 
     fn close(&mut self);
 
-    fn map<F, U>(self, f: F) -> map_rdd::MapRDD<Self, F> where Self: Sized, F: Fn(Self::Item) -> U {
-        map_rdd::MapRDD::new(self, f)
+    fn map<F, U>(self, f: F) -> map::Map<Self, F> where Self: Sized, F: Fn(Self::Item) -> U {
+        map::Map::new(self, f)
     }
     
-    fn filter<F>(self, f: F) -> filter_rdd::FilterRDD<Self, F> where Self: Sized, F: Fn(&Self::Item) -> bool {
-        filter_rdd::FilterRDD::new(self, f)
+    fn filter<F>(self, f: F) -> filter::Filter<Self, F> where Self: Sized, F: Fn(&Self::Item) -> bool {
+        filter::Filter::new(self, f)
     }
     
     fn for_each<F>(self, f: F) where Self: Sized, F: Fn(Self::Item) {
-        let mut rdd = foreach_rdd::ForeachRDD::new(self, f);
+        let mut rdd = foreach::Foreach::new(self, f);
         rdd.execute();
     }
 }
 
-pub fn new<T>(vec: Vec<T>) -> vec_rdd::VecRDD<T> {
-    vec_rdd::VecRDD::new(vec)
+pub fn new<T>(vec: Vec<T>) -> vec::Collection<T> {
+    vec::Collection::new(vec)
 }
