@@ -20,24 +20,14 @@ impl Display for Record {
 }
 
 fn main() {
-    println!("######### int32 rdd #########");
+    println!("######### records rdd #########");
     rdd::new(vec![1,2,3])
         .map(|int| int + 1)
         .filter(|&i| i % 2 == 0)
-        .for_each(|i| println!("{}", i));
-
-    println!("\n######### record rdd #########");
-    rdd::new(vec![
-        Faker.fake::<Record>(),
-        Faker.fake::<Record>(),
-        Faker.fake::<Record>(),
-        Faker.fake::<Record>(),
-        Faker.fake::<Record>(),
-        Faker.fake::<Record>(),
-        Faker.fake::<Record>(),
-        Faker.fake::<Record>(),
-        Faker.fake::<Record>(),
-        Faker.fake::<Record>(),
-    ])
-    .for_each(|r| println!("{:#}", r))
+        .flat_map(|count| {
+            //println!("{}", count);
+            //(0..count).map(|_| Faker.fake::<Record>()).for_each(|r| println!("{:#}", r));
+            (0..count).map(|_| Faker.fake::<Record>())
+        })
+        .for_each(|r| println!("{:#}", r))
 }

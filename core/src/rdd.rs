@@ -2,6 +2,7 @@ mod map;
 mod vec;
 mod filter;
 mod foreach;
+mod flatmap;
 
 pub trait RDD {
     type Item;
@@ -10,6 +11,7 @@ pub trait RDD {
 
     fn close(&mut self);
 
+    // Transformations
     fn map<F, U>(self, f: F) -> map::Map<Self, F> where Self: Sized, F: Fn(Self::Item) -> U {
         map::Map::new(self, f)
     }
@@ -18,6 +20,15 @@ pub trait RDD {
         filter::Filter::new(self, f)
     }
     
+    fn flat_map<F, Iter>(self, f: F) -> flatmap::FlatMap<Iter, Self, F>
+    where
+        Self: Sized,
+        F: Fn(Self::Item) -> Iter {
+
+        flatmap::FlatMap::new(self, f)
+    }
+    
+    // Actions
     fn for_each<F>(self, f: F) where Self: Sized, F: Fn(Self::Item) {
         let mut rdd = foreach::Foreach::new(self, f);
         rdd.execute();
